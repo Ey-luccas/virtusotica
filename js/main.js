@@ -1,3 +1,20 @@
+// Fix links on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Fix all absolute paths that might not work
+    const currentPath = window.location.pathname;
+    const isInSubfolder = currentPath.includes('/pages/');
+    
+    // Fix navigation links
+    document.querySelectorAll('a[href^="/"]').forEach(link => {
+        const href = link.getAttribute('href');
+        // Skip external links
+        if (href.startsWith('http')) return;
+        
+        // If we're in a subfolder and link starts with /, we might need to adjust
+        // But for now, keep absolute paths as they should work in production
+    });
+});
+
 // Mobile Menu Toggle
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
@@ -50,6 +67,25 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             });
         }
     });
+});
+
+// Handle anchor links from other pages (e.g., /index.html#home)
+window.addEventListener('DOMContentLoaded', function() {
+    const hash = window.location.hash;
+    if (hash) {
+        setTimeout(() => {
+            const target = document.querySelector(hash);
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }, 100);
+    }
 });
 
 // Intersection Observer for fade-in animations

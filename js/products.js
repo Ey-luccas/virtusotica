@@ -371,18 +371,9 @@ function getWhatsAppLink(product) {
                 const currentPath = window.location.pathname;
                 const baseUrl = window.location.origin;
                 
-                // Remove '../' from image path
-                let cleanPath = product.image.replace(/^\.\.\//, '');
-                
-                // If we're in pages/, the image path is already correct
-                // If we're in root, we need to adjust
-                if (currentPath.includes('/pages/')) {
-                    // We're in pages/, so assets/products/ is correct
-                    imageUrl = baseUrl + '/' + cleanPath;
-                } else {
-                    // We're in root, so assets/products/ is correct
-                    imageUrl = baseUrl + '/' + cleanPath;
-                }
+                // Remove '/' from start if present, then build full URL
+                let cleanPath = product.image.replace(/^\//, '');
+                imageUrl = baseUrl + '/' + cleanPath;
             }
         }
     } catch (error) {
